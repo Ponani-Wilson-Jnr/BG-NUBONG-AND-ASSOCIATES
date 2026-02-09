@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Search Results | BG Nubong & Associates</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header class="taskbar">
+    <nav class="taskbar-inner">
+        <ul class="menu">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="about.html">About Us</a></li>
+            <li><a href="services.html">Our Services</a></li>
+            <li><a href="profile.html">Our Profile</a></li>
+            <li><a href="contact.html">Contact Us</a></li>
+        </ul>
+    </nav>
+</header>
+
+<main class="content">
+    <h1>Search Results</h1>
+    <p id="search-query"></p>
+    <div id="results-container"></div>
+</main>
+
+<footer class="site-footer">
+    <p>&copy; 2026 BG Nubong & Associates. All rights reserved.</p>
+</footer>
+
+<script>
+// ==== Content Database ====
+const siteContent = [
+    {
+        page: "About Us",
+        url: "about.html",
+        content: "BG Nubong and Associates Inc is an emerging black-owned auditing firm providing multi-disciplinary professional services in Audit & Assurance, Accounting, Tax, Payroll, and Financial Management."
+    },
+    {
+        page: "Our Profile",
+        url: "profile.html",
+        content: "Barbara Nubong CA(SA) RA is the Managing Director and Principal Accountant. She is a Chartered Accountant and Registered Auditor with extensive experience in auditing and advisory services."
+    },
+    {
+        page: "Services",
+        url: "services.html",
+        content: "Our firm provides accounting, auditing, taxation, payroll, and financial advisory services to SMEs, NGOs, and large enterprises."
+    },
+    {
+        page: "Home",
+        url: "index.html",
+        content: "Welcome to BG Nubong and Associates. Professional accounting, audit, tax, and advisory services delivered with integrity."
+    },
+    {
+        page: "Contact Us",
+        url: "contact.html",
+        content: "Get in touch with BG Nubong and Associates for professional accounting and audit services. Email: info@bgninc.co.za"
+    }
+];
+
+// ==== Get Query from URL ====
+const params = new URLSearchParams(window.location.search);
+const query = params.get("q");
+document.getElementById("search-query").innerText = query ? `Results for: "${query}"` : "No search query.";
+
+// ==== Search Logic ====
+const resultsContainer = document.getElementById("results-container");
+if(query) {
+    const results = siteContent.filter(item => 
+        item.content.toLowerCase().includes(query.toLowerCase()) ||
+        item.page.toLowerCase().includes(query.toLowerCase())
+    );
+
+    if(results.length > 0){
+        results.forEach(item => {
+            const resultDiv = document.createElement("div");
+            resultDiv.classList.add("search-result");
+            resultDiv.innerHTML = `
+                <h3><a href="${item.url}">${item.page}</a></h3>
+                <p>${item.content.substring(0, 200)}...</p>
+            `;
+            resultsContainer.appendChild(resultDiv);
+        });
+    } else {
+        resultsContainer.innerHTML = "<p>No results found.</p>";
+    }
+} else {
+    resultsContainer.innerHTML = "<p>No search query provided.</p>";
+}
+</script>
+
+</body>
+</html>
